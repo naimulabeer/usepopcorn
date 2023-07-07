@@ -141,10 +141,12 @@ function Navbar({ children }) {
 }
 
 function Logo() {
-  <div className="logo">
-    <span role="img">🍿</span>
-    <h1>usePopcorn</h1>
-  </div>;
+  return (
+    <div className="logo">
+      <span role="img">🍿</span>
+      <h1>usePopcorn</h1>
+    </div>
+  );
 }
 
 function Search({ query, setQuery }) {
