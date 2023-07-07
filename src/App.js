@@ -53,39 +53,52 @@ const average = (arr) =>
 const KEY = "655e8e16";
 
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "batman";
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
-        );
+  //const tempQuery = "batman";
 
-        if (!res.ok) throw new Error("Something went wrong with fetching");
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
+          );
 
-        const data = await res.json();
-        if (data.Response === "false") throw new Error("Movie not Found");
-        setMovies(data.Search);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+          if (!res.ok) throw new Error("Something went wrong with fetching");
+
+          const data = await res.json();
+          if (data.Response === "false") throw new Error("Movie not Found");
+          setMovies(data.Search);
+        } catch (err) {
+          console.log(err.message);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
-    fetchMovies();
-  }, []);
+
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovies();
+    },
+    [query]
+  );
 
   return (
     <>
       <Navbar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </Navbar>
       <Main>
@@ -134,8 +147,7 @@ function Logo() {
   </div>;
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
@@ -150,7 +162,8 @@ function Search() {
 function NumResults({ movies }) {
   return (
     <p className="num-results">
-      Found <strong>{movies.length}</strong> results
+      Found <strong></strong> results
+      {/* something wrong above strong part */}
     </p>
   );
 }
