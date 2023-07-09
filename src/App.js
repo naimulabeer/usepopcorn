@@ -125,6 +125,7 @@ function Search({ query, setQuery }) {
 }
 
 function NumResults({ movies }) {
+  //const length = movies.length;
   return (
     <p className="num-results">
       Found <strong></strong> results
@@ -381,7 +382,7 @@ function WatchedMovie({ movie, onDeleteWatched }) {
   return (
     <li>
       <img src={movie.poster} alt={`${movie.title} poster`} />
-      <h3>{movie.Title}</h3>
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
